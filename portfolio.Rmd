@@ -63,5 +63,12 @@ Mixed-methods. Process tracing, large-n statistical analysis, interviews, ethnog
 
 - The GDELT Project - ( [data](https://www.gdeltproject.org/data.html))
 
+<!--
+Lisa, 
+These datasets look like great options from which to select a few variables of interest. GDELT especially is massive, so you may want to write a separate R script that downloads your dataset of interest, selects a number of variables, and saves a smaller file in your data subfolder that this script can then call upon. 
+Best,
+Devin 
+-->
+
 ---
 
