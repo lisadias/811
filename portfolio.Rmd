@@ -72,3 +72,11 @@ Devin
 
 ---
 
+### Description of Data
+
+```{r summary of data, include = TRUE}
+d <- read.csv("~/811/data/SCAD2017Africa_Final.csv")
+variables <- c("countryname", "eyr", "etype", "ndeath", "repress")
+protests <- d[variables]
+summary(protests)
+```

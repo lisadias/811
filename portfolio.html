@@ -149,6 +149,7 @@ $(document).ready(function () {
 <li><a href="#questions-i-hope-to-answer">Questions I hope to answer</a></li>
 <li><a href="#methods">Methods</a></li>
 <li><a href="#relevent-data">Relevent data</a></li>
+<li><a href="#description-of-data">Description of Data</a></li>
 </ul>
 </div>
 
@@ -176,7 +177,36 @@ $(document).ready(function () {
 <li><p>The Armed Conflict Location and Event Data Project (ACLED) - ( <a href="https://www.acleddata.com/data/">data</a>]</p></li>
 <li><p>The GDELT Project - ( <a href="https://www.gdeltproject.org/data.html">data</a>)</p></li>
 </ul>
+<!--
+Lisa, 
+These datasets look like great options from which to select a few variables of interest. GDELT especially is massive, so you may want to write a separate R script that downloads your dataset of interest, selects a number of variables, and saves a smaller file in your data subfolder that this script can then call upon. 
+Best,
+Devin 
+-->
 <hr />
+</div>
+<div id="description-of-data" class="section level3">
+<h3>Description of Data</h3>
+<pre class="r"><code>d &lt;- read.csv(&quot;~/811/data/SCAD2017Africa_Final.csv&quot;)
+variables &lt;- c(&quot;countryname&quot;, &quot;eyr&quot;, &quot;etype&quot;, &quot;ndeath&quot;, &quot;repress&quot;)
+protests &lt;- d[variables]
+summary(protests)</code></pre>
+<pre><code>##        countryname        eyr           etype            ndeath        
+##  Nigeria     :2363   Min.   :1990   Min.   :-9.000   Min.   : -99.000  
+##  Egypt       :1984   1st Qu.:2001   1st Qu.: 2.000   1st Qu.:   0.000  
+##  South Africa:1287   Median :2011   Median : 6.000   Median :   0.000  
+##  Libya       : 820   Mean   :2007   Mean   : 5.255   Mean   :   9.713  
+##  Somalia     : 794   3rd Qu.:2014   3rd Qu.: 8.000   3rd Qu.:   4.000  
+##  Kenya       : 772   Max.   :2016   Max.   :10.000   Max.   :5000.000  
+##  (Other)     :8090                                                     
+##     repress      
+##  Min.   :0.0000  
+##  1st Qu.:0.0000  
+##  Median :0.0000  
+##  Mean   :0.3782  
+##  3rd Qu.:1.0000  
+##  Max.   :2.0000  
+## </code></pre>
 </div>
 
 
