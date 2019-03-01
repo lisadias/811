@@ -128,5 +128,15 @@ I'm trying to plot a graph where I have basically the same two axes as my two gr
 Also, as you'll see when I knit the Rmd file, my title/caption are being cut. I've tried messing around with it but can't figure out how to change that. Is there a way to fix that? 
 
   
+```{r protests-per-year}
+d <- protests
+d %>% 
+  filter(countryname %in% c("Angola", "Mozambique", "Guinea-Bissau") ) %>% 
+  group_by(countryname, eyr) %>% 
+  tally() %>% 
+ggplot( aes(x = eyr, y = n, color = countryname)) + 
+  geom_point(alpha = .2) + 
+  geom_smooth(se=F)
 
+```
 
