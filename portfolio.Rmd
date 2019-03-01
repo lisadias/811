@@ -6,14 +6,14 @@ output:
     toc: true ## table of contents
     code_folding: hide
 ---
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 ## Defaults for R chunks
 knitr::opts_chunk$set(echo = TRUE, ## echo = TRUE means code will show
                       warning=FALSE, ## supress warnings and messages from R
                       message=FALSE,
                       fig.path='Figs/', ## where to save figures
-                      fig.height = 3, ## default figure size (can differ in each chunk)
-                      fig.width = 3)
+                      fig.height = 6, ## default figure size (can differ in each chunk)
+                      fig.width = 6)
 
 ## Add any R packages you require. 
 ## Here are some we will use in 811:
@@ -80,3 +80,48 @@ variables <- c("countryname", "eyr", "etype", "ndeath", "repress")
 protests <- d[variables]
 summary(protests)
 ```
+
+### Number of Protests Events in Africa 
+
+```{r graphs for number of protest events, fig.show = 'show'}
+
+
+### Number of protest events in portuguese-speaking Africa 
+
+protests <- read.csv("~/811/data/protests.csv")
+
+portuguese_speaking_countries <- filter(protests, protests$countryname %in% c("Angola", "Mozambique", "Guinea-Bissau"))
+
+number_events <- portuguese_speaking_countries %>% group_by(eyr) 
+
+number_events_per_year <- number_events %>% tally()
+
+ggplot(number_events_per_year) +
+         geom_point(aes(eyr, n)) +
+  labs(x = "Year", y = "Number of Protest Events", title = "Total Number of Protest Events in Portuguese-Speaking Africa", caption = "For portuguese-speaking countries in Africa, I only have data for Angola, Mozambique and Guinea-Bissau") 
+
+### Graph for Number of Protest Events in the whole of Africa
+
+number_events_all <- protests %>% group_by(eyr) 
+
+number_events_per_year_all <- number_events_all %>%tally()
+
+ggplot(number_events_per_year_all) +
+  geom_point(aes(eyr, n)) +
+  labs(x = "Year", y = "Number of Protest Events", title = "Total Number of Protest Events in Africa")
+
+```
+  
+### Question about ggplot
+
+Hi Devin,
+
+I'm trying to plot a graph where I have basically the same two axes as my two graphs above (x=year, y=total number of protest events), but where I have different lines on the graph for each of the countries (I currently have a single point for all the countries combined). For example, I want to be able to look at different lines for Angola, Mozambqiue and Guinea-Bissau in the first graph. I've tried to use different combinations of the tally/filter functions, but I can't figure out how to create lines for each country.
+
+Also, as you'll see when I knit the Rmd file, my title/caption are being cut. I've tried messing around with it but can't figure out how to change that. Is there a way to fix that? 
+
+
+
+  
+
+
