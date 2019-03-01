@@ -98,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -105,9 +108,70 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
@@ -120,7 +184,6 @@ $(document).ready(function () {
   window.initializeCodeFolding("hide" === "show");
 });
 </script>
-
 
 
 
@@ -189,9 +252,13 @@ Devin
 </div>
 <div id="description-of-data" class="section level3">
 <h3>Description of Data</h3>
-<pre class="r"><code>d &lt;- read.csv(&quot;~/811/data/SCAD2017Africa_Final.csv&quot;)
+<pre class="r"><code># d &lt;- read.csv(&quot;~/811/data/SCAD2017Africa_Final.csv&quot;)
+# Note, the above path requires that I named your repository &quot;811&quot; when I cloned it and that my current working directory has this folder in it. 
+d &lt;- read.csv(here(&quot;data/SCAD2017Africa_Final.csv&quot;))
+
 variables &lt;- c(&quot;countryname&quot;, &quot;eyr&quot;, &quot;etype&quot;, &quot;ndeath&quot;, &quot;repress&quot;)
-protests &lt;- d[variables]
+protests &lt;- d[variables] # or d %&lt;&gt;% select(variables)
+
 summary(protests)</code></pre>
 <pre><code>##        countryname        eyr           etype            ndeath        
 ##  Nigeria     :2363   Min.   :1990   Min.   :-9.000   Min.   : -99.000  
@@ -214,7 +281,9 @@ summary(protests)</code></pre>
 <h3>Number of Protests Events in Africa</h3>
 <pre class="r"><code>### Number of protest events in portuguese-speaking Africa 
 
-protests &lt;- read.csv(&quot;~/811/data/protests.csv&quot;)
+# protests &lt;- read.csv(&quot;~/811/data/protests.csv&quot;)
+protests &lt;- read.csv(here(&quot;data/protests.csv&quot;))
+
 
 portuguese_speaking_countries &lt;- filter(protests, protests$countryname %in% c(&quot;Angola&quot;, &quot;Mozambique&quot;, &quot;Guinea-Bissau&quot;))
 
