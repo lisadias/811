@@ -75,10 +75,15 @@ Devin
 ### Description of Data
 
 ```{r summary of data, include = TRUE}
-d <- read.csv("~/811/data/SCAD2017Africa_Final.csv")
+# d <- read.csv("~/811/data/SCAD2017Africa_Final.csv")
+# Note, the above path requires that I named your repository "811" when I cloned it and that my current working directory has this folder in it. 
+d <- read.csv(here("data/SCAD2017Africa_Final.csv"))
+
 variables <- c("countryname", "eyr", "etype", "ndeath", "repress")
-protests <- d[variables]
+protests <- d[variables] # or d %<>% select(variables)
+
 summary(protests)
+glimpse(protests)
 ```
 
 ### Number of Protests Events in Africa 
@@ -88,8 +93,10 @@ summary(protests)
 
 ### Number of protest events in portuguese-speaking Africa 
 
-protests <- read.csv("~/811/data/protests.csv")
+# protests <- read.csv("~/811/data/protests.csv")
+protests <- read.csv(here("data/protests.csv"))
 
+## Solid object names :)
 portuguese_speaking_countries <- filter(protests, protests$countryname %in% c("Angola", "Mozambique", "Guinea-Bissau"))
 
 number_events <- portuguese_speaking_countries %>% group_by(eyr) 
@@ -119,8 +126,16 @@ Hi Devin,
 I'm trying to plot a graph where I have basically the same two axes as my two graphs above (x=year, y=total number of protest events), but where I have different lines on the graph for each of the countries (I currently have a single point for all the countries combined). For example, I want to be able to look at different lines for Angola, Mozambqiue and Guinea-Bissau in the first graph. I've tried to use different combinations of the tally/filter functions, but I can't figure out how to create lines for each country.
 
 
-
-
   
+```{r protests-per-year}
+d <- protests
+d %>% 
+  filter(countryname %in% c("Angola", "Mozambique", "Guinea-Bissau") ) %>% 
+  group_by(countryname, eyr) %>% 
+  tally() %>% 
+ggplot( aes(x = eyr, y = n, color = countryname)) + 
+  geom_point(alpha = .2) + 
+  geom_smooth(se=F)
 
+```
 
