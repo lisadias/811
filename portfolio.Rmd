@@ -90,7 +90,6 @@ glimpse(protests)
 
 ```{r graphs for number of protest events, fig.show = 'show'}
 
-
 ### Number of protest events in portuguese-speaking Africa 
 
 # protests <- read.csv("~/811/data/protests.csv")
@@ -127,7 +126,7 @@ I'm trying to plot a graph where I have basically the same two axes as my two gr
 
 
   
-```{r protests-per-year}
+```{r protests-per-year-portuguese-speaking}
 d <- protests
 d %>% 
   filter(countryname %in% c("Angola", "Mozambique", "Guinea-Bissau") ) %>% 
@@ -135,7 +134,8 @@ d %>%
   tally() %>% 
 ggplot( aes(x = eyr, y = n, color = countryname)) + 
   geom_point(alpha = .2) + 
-  geom_smooth(se=F)
+  geom_smooth(se=F) +
+  labs(x = "Year", y = "Number of Protest Events", title = "Protests in Portuguese-Speaking Africa")
 
 ```
 
