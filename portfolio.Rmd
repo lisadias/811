@@ -124,8 +124,8 @@ Hi Devin,
 
 I'm trying to plot a graph where I have basically the same two axes as my two graphs above (x=year, y=total number of protest events), but where I have different lines on the graph for each of the countries (I currently have a single point for all the countries combined). For example, I want to be able to look at different lines for Angola, Mozambqiue and Guinea-Bissau in the first graph. I've tried to use different combinations of the tally/filter functions, but I can't figure out how to create lines for each country.
 
+### Number of Protests in Portuguese Speaking Africa
 
-  
 ```{r protests-per-year-portuguese-speaking-countries}
 d <- protests
 d %>% 
