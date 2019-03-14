@@ -126,7 +126,7 @@ I'm trying to plot a graph where I have basically the same two axes as my two gr
 
 
   
-```{r protests-per-year-portuguese-speaking}
+```{r protests-per-year-portuguese-speaking-countries}
 d <- protests
 d %>% 
   filter(countryname %in% c("Angola", "Mozambique", "Guinea-Bissau") ) %>% 
