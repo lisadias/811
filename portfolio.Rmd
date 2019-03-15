@@ -126,16 +126,19 @@ I'm trying to plot a graph where I have basically the same two axes as my two gr
 
 ### Number of Protests in Portuguese Speaking Africa
 
-```{r protests-per-year-portuguese-speaking-countries}
+```{r protests-per-year-portuguese-speaking-countries, fig.width=5, fig.height=3}
 d <- protests
 d %>% 
   filter(countryname %in% c("Angola", "Mozambique", "Guinea-Bissau") ) %>% 
   group_by(countryname, eyr) %>% 
   tally() %>% 
 ggplot( aes(x = eyr, y = n, color = countryname)) + 
-  geom_point(alpha = .2) + 
+  geom_point(alpha = .5) + 
   geom_smooth(se=F) +
-  labs(x = "Year", y = "Number of Protest Events", title = "Protests in Portuguese-Speaking Africa")
+  labs(x = "Year", 
+       y = "Number of Protest Events", 
+       color = "Country",
+       title = "Protests in Portuguese-Speaking Africa")
 
 ```
 
