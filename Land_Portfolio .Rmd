@@ -57,7 +57,7 @@ world %<>% full_join(continent) # merge world with dataset with continents
 world %<>% 
   filter(continent == "Africa") # filter for countries in Africa
 
-landata <- read_csv("data/Africa_Prindex.csv") 
+landata <- read_csv("data/Africa_SIGI2019.csv") 
 
 names(landata) <- landata[1, ] 
 
