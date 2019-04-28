@@ -99,6 +99,21 @@ world %>%
 
 ## Analysis 
 
-# Linear Model 
+## Model 1 - OLS Regression (SIGI 2019 Data)
+
+```{r regression}
+
+# adding data for IV's
+corruptiondata <- read_csv("data/Sub-Saharan-Africa_corruption.csv") 
+names(corruptiondata) <- corruptiondata[1, ] 
+
+
+corruptiondata %>% 
+
+
+```
+
+
+
 # Logistic Model 
 
