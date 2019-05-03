@@ -1,5 +1,5 @@
 ---
-title: "PS811 Portfolio"
+title: "PS811 Portfolio - The Impact of Formal Property Rights on Women's Tenure in Africa"
 author: "Lisa de Sousa Dias"
 output:
   html_document: 
@@ -39,13 +39,13 @@ library(raster)
 
 ## Research Question 
 
-Much of the literature on women and land tenure has focused of questions surrounding customary land systems and whether they provide greater protections for women. A dominant view in the literature and among policymakers is that land reform should build on customary land systems and existing instituions rather than break with them. These arguments are based on evidence that land titiling and registration programs and the erosion of custormary systems during and after independence were a setback for women. However, a growing number of feminist scholars and African women's rights activists have challenged the claim that reforming customary systems advances women's land interets. This view argues that only right-based land systems and formal property rights will enable women to break from the patriarchal power structures of customary land systems. Using data for 16 countries in Sub-Saharan Africa, I investigate how formal property rights impact women's tenure security in Sub-Saharan Africa. 
+While land lies at the heart of social, political, and economic life in Africa, women remain disadvantaged and discriminated against in existing land tenure regimes. In Kenya, for example, despite major constitutional and legislative reform, estimates suggest that only 1 per cent of land is registered to women alone and only 5 per cent of land is registered jointly with men. Much of the literature on women and land tenure in Africa focuses on questions surrounding customary land systems and specifically whether they provide greater protections for women. A dominant view in the literature and among policymakers is that land reform should build on customary land systems and existing institutions rather than break with them. These arguments are based on evidence that land titling and registration programs and the erosion of customary systems during and after independence were a setback for women. 
 
-## Data Sources
+Meanwhile, a growing number of feminist scholars and African women's rights activists have challenged the claim that reforming customary systems advances women's land interests. They claim that reforming customary systems reproduces gendered power imbalances especially evident as customary laws and practices have selectively preserved elements that subordinate women. Indeed, these scholars and activists argue that only right-based land systems and formal property rights will enable women to break from the patriarchal power structures of customary land systems. Given contradicting and opposing views, I investigate how formal property rights impact women's tenure security using data from 16 countries in sub-Saharan Africa.
 
 ## Descriptive Statistics
 
-```{r map tenure security}
+```{r datasets for map}
 
 world <- map_data("world") %>% rename(country = region)
 
@@ -57,63 +57,115 @@ world %<>% full_join(continent) # merge world with dataset with continents
 world %<>% 
   filter(continent == "Africa") # filter for countries in Africa
 
-landata <- read_csv("data/Africa_SIGI2019.csv") 
-
-names(landata) <- landata[1, ] 
+landata <- read_csv("data/ssa_sigi_2019.csv") 
 
 landata %<>% 
-  .[-1, ] %>% # removing the first row which is just empty 
-  mutate(Tenure_Security = as.numeric(Tenure_Security)) # transforming Tenure_Security into a numeric variable 
+  mutate(tenure_security = as.numeric(tenure_security)) # transforming Tenure_Security into a numeric variable 
 
-landata %<>% rename(country = Country_Name) # change Country_Name to country 
+landata %<>% rename(country = country_name) # change Country_Name to country 
 
 landata %>%  # changing name of Ivory Coast and DRC to match 
   mutate(country = str_replace(country, "Ivory Coast" , "Côte d'Ivoire")) %>%
   mutate(country = str_replace(country, "DRC" , "Democratic Republic of the Congo"))
 
-landata %<>%
-  rename(Security = Tenure_Security) %>%
-  rename(Rights = Property_Rights)
+world %<>% full_join(landata)
 
-world %<>% full_join(land2)
+```
 
-# Ploting Women's Tenure Security in Africa 
+### Map of Share of Labor Force Employed in Agriculture 
+```{r map of share of labor force in agriculture}
+
+# Map of share of labor force employed in agriculture 
 
 world %>%  
   ggplot( aes(x = long, y = lat) ) +  
-  geom_polygon( aes(group = group, fill = Security), color = "grey") +
+  geom_polygon( aes(group = group, fill = share_labor_agriculture), color = "grey") +
   scale_fill_viridis_c()
 
 ```
 
-```{r map formal rights}
+### Map of Women's Tenure Security 
+```{r map of women tenure security}
 
-# Ploting Property Rights in Africa
+# Map of women's tenure security   
 
 world %>%  
   ggplot( aes(x = long, y = lat) ) +  
-  geom_polygon( aes(group = group, fill = Rights), color = "grey") +
-  scale_fill_viridis_d()
+  geom_polygon( aes(group = group, fill = tenure_security), color = "grey") +
+  scale_fill_viridis_c()
+
+```
+
+### Map of Strength of Formal Property Rights
+```{r map formal rights}
+
+# Map of property rights
+
+world %>%  
+  ggplot( aes(x = long, y = lat) ) +  
+  geom_polygon( aes(group = group, fill = property_rights), color = "grey") +
+  scale_fill_viridis_c()
 
 ```
 
 ## Analysis 
 
-## Model 1 - OLS Regression (SIGI 2019 Data)
+### OLS Regression
+
+$y_i = \beta_0 + \beta_1*FormalPropertyRights_i + \beta_2*Corruption + \beta_3*ArableLand + \beta_4*LaborAgriculture + \beta_5*GDP + \beta_6*RuralPop +\epsilon_i$
 
 ```{r regression}
 
-# adding data for IV's
-corruptiondata <- read_csv("data/Sub-Saharan-Africa_corruption.csv") 
-names(corruptiondata) <- corruptiondata[1, ] 
+# OLS regression
 
+d <- landata
 
-corruptiondata %>% 
+model <- lm(d$tenure_security ~ d$property_rights + d$arable_land + d$share_labor_agriculture + d$cpi_score + d$rural_population)
 
+summary(model)
+```
+
+### Plot of Residuals 
+
+```{r residuals}
+
+# Plot of residuals
+
+residuals.model <- resid(model)
+
+plot(d$property_rights, residuals.model,
+     ylab = "Residuals", xlab = "Property Rights",
+     main = "Residuals") +
+  abline(0,0)
 
 ```
 
+### Case-Study of Kenya - Logistic Model 
 
+```{r case study of kenya}
 
-# Logistic Model 
+kenya <- read_csv("data/Kenya_download_V1.csv")
+
+kenya %<>% 
+  rename(country = Q3) %>%
+  rename(gender = Q21_Gender) %>%
+  rename(formaldocs = Q55_any_formal) %>%
+  rename(tenuresecurity = Q45_security)
+
+myvariables <- c("country", "gender", "formaldocs", "tenuresecurity")
+
+kenyadata <- kenya[myvariables]
+
+m2 <- glm(factor(tenuresecurity) ~ formaldocs*gender, data = kenyadata, family = "binomial")
+
+summary(m2)
+
+```
+
+## Data Sources
+
+- Social Institutions and Gender Index ( [data](https://www.genderindex.org/data/) )
+- Transparency International Corruption Perception Index ( [data](https://www.transparency.org/cpi2018) )
+- Prindex data on perceptions of land and property rights ( [data](https://www.prindex.net/data/) )
+- World Bank indicators ( [data](https://datacatalog.worldbank.org/dataset/world-development-indicators) )
 
