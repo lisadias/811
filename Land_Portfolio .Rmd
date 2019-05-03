@@ -1,5 +1,5 @@
 ---
-title: "PS811 Portfolio - The Impact of Formal Property Rights on Women's Tenure in Africa"
+title: "PS811 Portfolio - The Impact of Private Property Rights on Women's Tenure in Africa"
 author: "Lisa de Sousa Dias"
 output:
   html_document: 
@@ -41,7 +41,7 @@ library(raster)
 
 While land lies at the heart of social, political, and economic life in Africa, women remain disadvantaged and discriminated against in existing land tenure regimes. In Kenya, for example, despite major constitutional and legislative reform, estimates suggest that only 1 per cent of land is registered to women alone and only 5 per cent of land is registered jointly with men. Much of the literature on women and land tenure in Africa focuses on questions surrounding customary land systems and specifically whether they provide greater protections for women. A dominant view in the literature and among policymakers is that land reform should build on customary land systems and existing institutions rather than break with them. These arguments are based on evidence that land titling and registration programs and the erosion of customary systems during and after independence were a setback for women. 
 
-Meanwhile, a growing number of feminist scholars and African women's rights activists have challenged the claim that reforming customary systems advances women's land interests. They claim that reforming customary systems reproduces gendered power imbalances especially evident as customary laws and practices have selectively preserved elements that subordinate women. Indeed, these scholars and activists argue that only right-based land systems and formal property rights will enable women to break from the patriarchal power structures of customary land systems. Given contradicting and opposing views, I investigate how formal property rights impact women's tenure security using data from 16 countries in sub-Saharan Africa.
+Meanwhile, a growing number of feminist scholars and African women's rights activists have challenged the claim that reforming customary systems advances women's land interests. They claim that reforming customary systems reproduces gendered power imbalances especially evident as customary laws and practices have selectively preserved elements that subordinate women. Indeed, these scholars and activists argue that only right-based land systems and private property rights will enable women to break from the patriarchal power structures of customary land systems. Given contradicting and opposing views, I investigate how private property rights impact women's tenure security using data from 16 countries in sub-Saharan Africa.
 
 ## Descriptive Statistics
 
@@ -52,7 +52,7 @@ world <- map_data("world") %>% rename(country = region)
 continent <- raster::ccodes() %>% 
   rename(country = NAME)
 
-world %<>% full_join(continent) # merge world with dataset with continents
+world %<>% full_join(continent) # merge world dataset with dataset with continents
 
 world %<>% 
   filter(continent == "Africa") # filter for countries in Africa
@@ -68,12 +68,12 @@ landata %>%  # changing name of Ivory Coast and DRC to match
   mutate(country = str_replace(country, "Ivory Coast" , "Côte d'Ivoire")) %>%
   mutate(country = str_replace(country, "DRC" , "Democratic Republic of the Congo"))
 
-world %<>% full_join(landata)
+world %<>% full_join(landata) # joining world and landdata 
 
 ```
 
-### Map of Share of Labor Force Employed in Agriculture 
-```{r map of share of labor force in agriculture}
+### Share of Labor Force Employed in Agriculture 
+```{r share of labor force in agriculture}
 
 # Map of share of labor force employed in agriculture 
 
@@ -84,8 +84,8 @@ world %>%
 
 ```
 
-### Map of Women's Tenure Security 
-```{r map of women tenure security}
+### Women's Tenure Security 
+```{r women tenure security}
 
 # Map of women's tenure security   
 
@@ -96,8 +96,8 @@ world %>%
 
 ```
 
-### Map of Strength of Formal Property Rights
-```{r map formal rights}
+### Strength of Private Property Rights
+```{r formal property rights}
 
 # Map of property rights
 
@@ -112,7 +112,7 @@ world %>%
 
 ### OLS Regression
 
-$y_i = \beta_0 + \beta_1*FormalPropertyRights_i + \beta_2*Corruption + \beta_3*ArableLand + \beta_4*LaborAgriculture + \beta_5*GDP + \beta_6*RuralPop +\epsilon_i$
+$y_i = \beta_0 + \beta_1*PropertyRights_i + \beta_2*Corruption + \beta_3*ArableLand + \beta_4*LaborAgriculture + \beta_5*GDP + \beta_6*RuralPop +\epsilon_i$
 
 ```{r regression}
 
