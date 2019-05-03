@@ -97,7 +97,7 @@ world %>%
 ```
 
 ### Strength of Private Property Rights
-```{r formal property rights}
+```{r private property rights}
 
 # Map of property rights
 
