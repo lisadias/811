@@ -148,15 +148,15 @@ kenya <- read_csv("data/Kenya_download_V1.csv")
 
 kenya %<>% 
   rename(country = Q3) %>%
-  rename(gender = Q21_Gender) %>%
+  rename(sex = Q21_Gender) %>%
   rename(formaldocs = Q55_any_formal) %>%
   rename(tenuresecurity = Q45_security)
 
-myvariables <- c("country", "gender", "formaldocs", "tenuresecurity")
+myvariables <- c("country", "sex", "formaldocs", "tenuresecurity")
 
 kenyadata <- kenya[myvariables]
 
-m2 <- glm(factor(tenuresecurity) ~ formaldocs*gender, data = kenyadata, family = "binomial")
+m2 <- glm(factor(tenuresecurity) ~ formaldocs*sex, data = kenyadata, family = "binomial")
 
 summary(m2)
 
